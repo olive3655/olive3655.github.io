@@ -3,82 +3,599 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>배수진 포트폴리오</title>
+    <title>배수진 | Production Designer</title>
     <style>
+        /* ==================== 기본 리셋 및 변수 설정 ==================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-primary: #1A1A1A;
+            --bg-secondary: #2D2D2D;
+            --accent: #6366F1;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B4B4B4;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* ==================== 풀스크린 슬라이드 레이아웃 ==================== */
+        .slide {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 60px 20px;
+            position: relative;
         }
 
-        .container {
+        /* ==================== 네비게이션 ==================== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 20px 0;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* 바운스 애니메이션 */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .bounce {
+            animation: bounce 0.6s ease;
+        }
+
+        /* ==================== 히어로 섹션 ==================== */
+        #hero {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .hero-content {
             text-align: center;
-            background: white;
-            padding: 80px 60px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 1s ease-in;
+            max-width: 800px;
         }
 
-        .profile-img {
+        .profile-image {
             width: 200px;
             height: 200px;
             border-radius: 50%;
             object-fit: cover;
+            border: 5px solid var(--accent);
             margin-bottom: 30px;
-            border: 5px solid #667eea;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .profile-image:hover {
+            transform: scale(1.05);
+            animation: bounce 0.6s ease;
         }
 
         h1 {
             font-size: 4rem;
-            color: #333;
-            margin-bottom: 20px;
-            font-weight: 700;
-            letter-spacing: -1px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        p {
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .intro {
             font-size: 1.2rem;
-            color: #666;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* 화살표 네비게이션 */
+        .arrow {
+            position: absolute;
+            bottom: 40px;
+            font-size: 2rem;
+            color: var(--accent);
+            cursor: pointer;
+            animation: bounce 2s infinite;
+        }
+
+        /* ==================== About Me 섹션 ==================== */
+        #about {
+            background: var(--bg-secondary);
+        }
+
+        .about-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 40px;
+            color: var(--accent);
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        /* ==================== Skills 섹션 ==================== */
+        #skills {
+            background: var(--bg-primary);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .skill-card {
+            background: var(--bg-secondary);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            animation: bounce 0.6s ease;
+        }
+
+        .skill-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .skill-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ==================== Projects 섹션 ==================== */
+        #projects {
+            background: var(--bg-secondary);
+        }
+
+        .projects-container {
+            max-width: 1200px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .project-card {
+            background: var(--bg-primary);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: scale(1.02);
+            animation: bounce 0.6s ease;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .project-info {
+            padding: 30px;
+        }
+
+        .project-title {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .project-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
             line-height: 1.6;
         }
 
-        .divider {
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(to right, #667eea, #764ba2);
-            margin: 25px auto;
-            border-radius: 2px;
+        /* ==================== Contact 섹션 ==================== */
+        #contact {
+            background: var(--bg-primary);
+        }
+
+        .contact-content {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .contact-info {
+            margin: 40px 0;
+        }
+
+        .contact-item {
+            margin: 20px 0;
+        }
+
+        .contact-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+            display: inline-block;
+        }
+
+        .contact-link:hover {
+            color: var(--text-primary);
+            animation: bounce 0.6s ease;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .social-icon {
+            font-size: 2rem;
+            color: var(--text-primary);
+            transition: color 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            color: var(--accent);
+            transform: scale(1.2);
+            animation: bounce 0.6s ease;
+        }
+
+        /* ==================== Footer ==================== */
+        footer {
+            background: var(--bg-secondary);
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--text-primary);
+        }
+
+        /* ==================== 반응형 디자인 ==================== */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                gap: 20px;
+                padding: 0 10px;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+            }
+
+            .project-image {
+                height: 250px;
+            }
+
+            .profile-image {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            nav ul {
+                gap: 15px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://olive3655.github.io/images/profile.JPG" alt="배수진 프로필" class="profile-img">
-        <h1>배수진</h1>
-        <div class="divider"></div>
-        <p>보리 누나 포트폴리오 웹사이트에 오신 것을 환영합니다</p>
-    </div>
+    <!-- 네비게이션 -->
+    <nav>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- 히어로 섹션 -->
+    <section id="hero" class="slide">
+        <div class="hero-content">
+            <img src="https://olive3655.github.io/images/profile.JPG" alt="배수진 프로필" class="profile-image">
+            <h1>배수진</h1>
+            <p class="subtitle">Bae Su Jin | Production Designer</p>
+            <p class="intro">제품을 누구보다 잘 알릴 수 있도록 도와주는 디자이너입니다</p>
+        </div>
+        <div class="arrow">↓</div>
+    </section>
+
+    <!-- About Me 섹션 -->
+    <section id="about" class="slide">
+        <div class="about-content">
+            <h2 class="section-title">About Me</h2>
+            <p class="about-text">
+                안녕하세요! 저는 제품의 가치를 시각적으로 전달하는 Production Designer 배수진입니다.
+                <br><br>
+                디자인을 통해 브랜드의 이야기를 효과적으로 전달하고, 사용자에게 감동을 주는 경험을 만드는 것을 목표로 하고 있습니다.
+                사용자 중심의 디자인 사고와 창의적인 문제 해결 능력을 바탕으로 다양한 프로젝트를 성공적으로 이끌어왔습니다.
+                <br><br>
+                항상 새로운 트렌드와 기술을 학습하며, 더 나은 디자인을 위해 끊임없이 노력하고 있습니다.
+            </p>
+        </div>
+    </section>
+
+    <!-- Skills 섹션 -->
+    <section id="skills" class="slide">
+        <div>
+            <h2 class="section-title">Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">🎨</div>
+                    <div class="skill-name">Visual Design</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">💡</div>
+                    <div class="skill-name">Brand Identity</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">📱</div>
+                    <div class="skill-name">UI/UX Design</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">✏️</div>
+                    <div class="skill-name">Illustration</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">📐</div>
+                    <div class="skill-name">Layout Design</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🖼️</div>
+                    <div class="skill-name">Photography</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects 섹션 -->
+    <section id="projects" class="slide">
+        <div class="projects-container">
+            <h2 class="section-title">Projects</h2>
+            
+            <div class="project-card">
+                <img src="https://via.placeholder.com/1200x400/6366F1/FFFFFF?text=Project+1" alt="프로젝트 1" class="project-image">
+                <div class="project-info">
+                    <h3 class="project-title">브랜드 리뉴얼 프로젝트</h3>
+                    <p class="project-description">
+                        기존 브랜드 아이덴티티를 현대적으로 재해석하여 새로운 비전을 제시한 프로젝트입니다. 
+                        로고, 컬러 시스템, 타이포그래피를 전면 개편하여 브랜드 가치를 효과적으로 전달했습니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://via.placeholder.com/1200x400/2D2D2D/6366F1?text=Project+2" alt="프로젝트 2" class="project-image">
+                <div class="project-info">
+                    <h3 class="project-title">모바일 앱 UI/UX 디자인</h3>
+                    <p class="project-description">
+                        사용자 경험을 최우선으로 고려한 직관적인 인터페이스를 설계했습니다. 
+                        사용자 리서치와 프로토타이핑을 통해 최적화된 사용성을 구현했습니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://via.placeholder.com/1200x400/1A1A1A/6366F1?text=Project+3" alt="프로젝트 3" class="project-image">
+                <div class="project-info">
+                    <h3 class="project-title">제품 패키지 디자인</h3>
+                    <p class="project-description">
+                        제품의 특성을 살린 독창적인 패키지 디자인으로 소비자의 구매 욕구를 자극하고 
+                        브랜드 인지도를 높이는 데 기여했습니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://via.placeholder.com/1200x400/6366F1/1A1A1A?text=Project+4" alt="프로젝트 4" class="project-image">
+                <div class="project-info">
+                    <h3 class="project-title">일러스트레이션 시리즈</h3>
+                    <p class="project-description">
+                        브랜드 스토리를 시각적으로 풀어낸 일러스트레이션 작업입니다. 
+                        일관된 스타일로 브랜드 아이덴티티를 강화하고 감성적 연결을 만들었습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact 섹션 -->
+    <section id="contact" class="slide">
+        <div class="contact-content">
+            <h2 class="section-title">Contact</h2>
+            <p class="about-text">
+                프로젝트 문의나 협업 제안은 언제든 환영합니다!<br>
+                아래 연락처로 편하게 연락주세요.
+            </p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <a href="mailto:sujin@example.com" class="contact-link">📧 sujin@example.com</a>
+                </div>
+                <div class="contact-item">
+                    <a href="tel:+821012345678" class="contact-link">📱 +82 10-1234-5678</a>
+                </div>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-icon" title="Instagram">📷</a>
+                <a href="#" class="social-icon" title="Behance">🎨</a>
+                <a href="#" class="social-icon" title="LinkedIn">💼</a>
+                <a href="#" class="social-icon" title="GitHub">💻</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 배수진. Powered by <a href="https://ai.triz.kr" target="_blank">AI Portfolio Workshop</a>.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 네비게이션 링크에 바운스 효과 추가
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                this.classList.add('bounce');
+                setTimeout(() => this.classList.remove('bounce'), 600);
+            });
+        });
+
+        // 스킬 카드 클릭 시 바운스 효과
+        document.querySelectorAll('.skill-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.add('bounce');
+                setTimeout(() => this.classList.remove('bounce'), 600);
+            });
+        });
+
+        // 프로젝트 카드 클릭 시 바운스 효과
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.add('bounce');
+                setTimeout(() => this.classList.remove('bounce'), 600);
+            });
+        });
+
+        // 프로필 이미지 클릭 시 바운스 효과
+        document.querySelector('.profile-image').addEventListener('click', function() {
+            this.classList.add('bounce');
+            setTimeout(() => this.classList.remove('bounce'), 600);
+        });
+
+        // 화살표 클릭 시 다음 섹션으로 스크롤
+        document.querySelector('.arrow').addEventListener('click', function() {
+            document.querySelector('#about').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 소셜 아이콘 클릭 시 바운스 효과
+        document.querySelectorAll('.social-icon').forEach(icon => {
+            icon.addEventListener('click', function(e) {
+                this.classList.add('bounce');
+                setTimeout(() => this.classList.remove('bounce'), 600);
+            });
+        });
+
+        // 페이지 로드 시 요소들에 순차적 애니메이션 효과
+        window.addEventListener('load', function() {
+            const heroContent = document.querySelector('.hero-content');
+            heroContent.style.opacity = '0';
+            heroContent.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                heroContent.style.transition = 'all 1s ease';
+                heroContent.style.opacity = '1';
+                heroContent.style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        // 스크롤 시 섹션 페이드인 효과
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.style.opacity = '0';
+            slide.style.transform = 'translateY(30px)';
+            slide.style.transition = 'all 0.8s ease';
+            observer.observe(slide);
+        });
+    </script>
 </body>
 </html>
